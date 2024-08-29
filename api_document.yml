@@ -60,7 +60,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/apiResponseUser'
+                $ref: '#/components/schemas/apiResponse'
 
 components:
   schemas:
@@ -102,23 +102,13 @@ components:
     apiResponse:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-        error:
-          type: boolean
-        message:
-          type: object
-    apiResponseUser:
-      type: object
-      properties:
-        code:
-          type: integer
         error:
           type: boolean
         data:
           type: object
-          $ref: '#/components/schemas/user'
+          properties:
+            message:
+              type: string
         
 
       
