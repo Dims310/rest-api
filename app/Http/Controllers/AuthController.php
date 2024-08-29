@@ -59,9 +59,10 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'code' => 422,
                 'error' => true,
-                'message' => $validator->messages()
+                'data' => [
+                    'message' => $validator->messages()->first(),
+                ]
             ], 422);
         }
 
@@ -75,22 +76,24 @@ class AuthController extends Controller
         // success condition
         if ($user) {
             return response()->json([
-                'code' => 200,
                 'error' => false,
-                'message' => "User created succcessfully."
+                'data' => [
+                    'message' => "Success create user."
+                ]
             ], 200);
         } 
 
         // false condition
         return response()->json([
-            'code' => 302,
             'error' => true,
-            'message' => "Fail create user, try again."
+            'data' => [
+                'message' => "Failed create user, try again."
+            ]
         ], 302);
     }
 
     // MASIH ERROR
-    public function me(Request $request) {
+    public function me() {
         $user = auth('api')->user();
         return response()->json(['user' => $user], 201);
     }
