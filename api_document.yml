@@ -1,0 +1,131 @@
+openapi: '3.0.3'
+info:
+  title: Laravel RestAPI
+  version: '1.0'
+servers:
+  - url: http://127.0.0.1:8000/
+tags:
+  - name: user
+paths:
+  /user/register:
+    post:
+      tags:
+        - user
+      summary: "Sign up user"
+      requestBody:
+        content:
+          application/form-data:
+            schema:
+              $ref: '#/components/schemas/userRegisterForm'
+        required: true
+      responses:
+        '200':
+          description: "Success store the user data"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiResponse'
+  /user/login:
+    post:
+      tags:
+          - user
+      summary: "Sign in user"
+      requestBody:
+        content:
+          application/form-data:
+            schema:
+              $ref: '#/components/schemas/userLoginForm'
+        required: true
+      responses:
+        '200':
+          description: Successful login with JWT Token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiResponse'
+  /user:
+    get:
+      tags:
+        - user
+      summary: "Get a user with JWT"
+      parameters:
+        - name: Bearer Token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful get a user record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiResponseUser'
+
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        name:
+          type: string
+        email: 
+          type: string
+        role:
+          type: string
+    userRegisterForm:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Ardimas"
+        email:
+          type: string
+          example: "ardimas@gmail.com"
+        password:
+          type: string
+          example: "tester123"
+        password_confirmation:
+          type: string
+          example: "tester123"
+        role_id:
+          type: integer
+          description: "Took foreign key to role entities"
+          example: "1"
+    userLoginForm:
+      type: object
+      properties:
+        email: 
+          type: string
+        password:
+          type: string
+    apiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        error:
+          type: boolean
+        message:
+          type: object
+    apiResponseUser:
+      type: object
+      properties:
+        code:
+          type: integer
+        error:
+          type: boolean
+        data:
+          type: object
+          $ref: '#/components/schemas/user'
+        
+
+      
+                
+
+                
+
+
+
+
