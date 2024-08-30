@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Response;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Validator;
 
@@ -23,27 +21,31 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'code' => 422,
                 'error' => true,
-                'message' => $validator->messages()
+                'data' => [
+                    'message' => $validator->messages()->first(),
+                ]
             ], 422);
         }
 
         $credentials = $request->only('email', 'password');
         $token = auth()->guard('api')->attempt($credentials);
 
+        // authentication failed
         if (!$token) {
             return response()->json([
-                'code' => 401,
                 'error' => true,
-                'message' => 'Email atau password Anda salah!'
+                'data' => [
+                    'message' => 'Incorrect email or password, try again.'
+                ]
             ], 401);
         }
 
+        // success authentication
         return response()->json([
-            'code' => 200,
             'error' => false,
-            'message' => [
+            'data' => [
+                'message' => "Token generated successfully.",
                 'token' => $token
             ]
         ], 200);
