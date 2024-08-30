@@ -22,14 +22,29 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->renderable(function(TokenInvalidException $e, $request){
-            return Response::json(['error'=>'Invalid token'], 401);
+            return Response::json([
+                'error' => true,
+                'data' => [
+                    'message' => $e->getMessage()
+                ]
+            ], 401);
         });
 
         $exceptions->renderable(function(TokenExpiredException $e, $request){
-            return Response::json(['error'=>'Token has Expired'], 401);
+            return Response::json([
+                'error' => true,
+                'data' => [
+                    'message' => $e->getMessage()
+                ]
+            ], 401);
         });
 
         $exceptions->renderable(function(JsonException $e, $request){
-            return Response::json(['error'=>'Token not parsed'], 401);
+            return Response::json([
+                'error' => true,
+                'data' => [
+                    'message' => $e->getMessage()
+                ]
+            ], 401);
         });
     })->create();
