@@ -94,10 +94,14 @@ class AuthController extends Controller
         ], 302);
     }
 
-    // MASIH ERROR
     public function me() {
         $user = auth('api')->user();
-        return response()->json(['user' => $user], 201);
+        return response()->json([
+            'error' => false,
+            'data' => [
+                'user' => $user
+            ]
+        ], 201);
     }
 
     public function logout() {
