@@ -18,4 +18,4 @@ Route::group(['middleware' => ['auth.jwt', 'auth.admin']], function() {
 });
 
 Route::middleware('auth.jwt')->get('/user/myprofile', [AuthController::class, 'myprofile']);
-Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:api')->post('/user/logout', [AuthController::class, 'logout']);
