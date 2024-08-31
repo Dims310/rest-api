@@ -9,8 +9,8 @@ Route::get('/', function () {
 
 Route::get('/csrftoken', function() {return csrf_token(); });
 
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/user/register', [AuthController::class, 'register'])->name('register');
+Route::post('/user/login', [AuthController::class, 'login'])->name('login');
 
-Route::middleware('auth.jwt')->get('/user', [AuthController::class, 'me']);
+Route::middleware('auth.jwt')->get('/user/myprofile', [AuthController::class, 'myprofile']);
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
