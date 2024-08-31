@@ -94,7 +94,7 @@ class AuthController extends Controller
         ], 302);
     }
 
-    public function me() {
+    public function myprofile() {
         $user = auth('api')->user();
         return response()->json([
             'error' => false,
