@@ -43,7 +43,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiResponse'
-  /user:
+  /user/myprofile:
     get:
       tags:
         - user
