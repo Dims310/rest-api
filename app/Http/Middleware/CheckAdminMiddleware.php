@@ -23,7 +23,7 @@ class CheckAdminMiddleware
         return response()->json([
             'error' => true,
             'data' => [
-                'message' => "Forbidden access"
+                'message' => "Forbidden access."
             ]
             ], 403);
     }
