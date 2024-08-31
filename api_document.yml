@@ -25,6 +25,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiResponse'
+        '302':
+          description: Failed to create user
+        '422':
+          description: Content cannot be processed
   /user/login:
     post:
       tags:
@@ -43,17 +47,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiResponse'
+        '401':
+          description: Invalid credentials
+        '422':
+          description: Content cannot be processed
   /user/myprofile:
     get:
       tags:
         - user
       summary: "Get a user with JWT"
       parameters:
-        - name: Bearer Token
+        - name: Authorization
           in: header
           required: true
           schema:
             type: string
+          description: JWT Bearer Token
       responses:
         '200':
           description: Successful get a user record
@@ -61,6 +70,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiResponse'
+        '401':
+          description: Token invalid
+  /user:
+    get:
+      tags:
+        - user
+      summary: "Get all user if the user is admin"
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT Bearer Token
+      responses:
+        '200':
+          description: Successfull get all user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiResponse'
+        '403':
+          description: Forbidden access
+  /user/logout:
+    post:
+      tags:
+        - user
+      summary: Logout current user
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT Bearer Token
+      responses:
+        '200':
+          description: Success logout current user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiResponse'
+        '401':
+          description: Unauthorized
 
 components:
   schemas:
@@ -109,7 +162,6 @@ components:
           properties:
             message:
               type: string
-        
 
       
                 
