@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Middleware\CheckAdminMiddleware;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
@@ -42,6 +44,15 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->renderable(function(JsonException $e, $request){
+            return Response::json([
+                'error' => true,
+                'data' => [
+                    'message' => $e->getMessage()
+                ]
+            ], 401);
+        });
+
+        $exceptions->renderable(function(JWTException $e, $request){
             return Response::json([
                 'error' => true,
                 'data' => [
