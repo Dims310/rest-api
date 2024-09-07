@@ -56,6 +56,7 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed',
+            'phone' => 'required|numeric|unique:users',
             'role_id' => 'required|integer'
         ]);
 
@@ -70,8 +71,10 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'nim' => $request->nim,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'phone' => $request->phone,
             'role_id' => $request->role_id
         ]);
 
@@ -100,8 +103,11 @@ class AuthController extends Controller
             'error' => false,
             'data' => [
                 'user' => [
+                    'id' => $user->id,
+                    'nim' => $user->nim,
                     'name' => $user->name,
                     'email' => $user->email,
+                    'phone' => $user->phone,
                     'role' => $user->role->name
                 ]
             ]
