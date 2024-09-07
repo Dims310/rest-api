@@ -6,21 +6,22 @@ servers:
   - url: http://127.0.0.1:8000/
 tags:
   - name: user
+  - name: service
 paths:
   /user/register:
     post:
       tags:
         - user
-      summary: "Sign up user"
+      summary: Sign up user
       requestBody:
         content:
-          application/form-data:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/userRegisterForm'
         required: true
       responses:
         '200':
-          description: "Success store the user data"
+          description: Success store the user data
           content:
             application/json:
               schema:
@@ -33,10 +34,10 @@ paths:
     post:
       tags:
           - user
-      summary: "Sign in user"
+      summary: Sign in user
       requestBody:
         content:
-          application/form-data:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/userLoginForm'
         required: true
@@ -46,7 +47,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/apiResponse'
+                allOf:
+                  - $ref: '#/components/schemas/apiResponse'
+                  - properties:
+                      data:
+                        type: object
+                        properties:
+                          token:
+                            type: string
         '401':
           description: Invalid credentials
         '422':
@@ -55,7 +63,7 @@ paths:
     get:
       tags:
         - user
-      summary: "Get a user with JWT"
+      summary: Get a user with JWT
       parameters:
         - name: Authorization
           in: header
@@ -69,14 +77,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/apiResponse'
+                allOf:
+                  - $ref: '#/components/schemas/apiResponse'
+                  - properties:
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              nim:
+                                type: string
+                              name:
+                                type: string
+                              email:
+                                type: string
+                              phone:
+                                type: string
+                              role:
+                                type: string
         '401':
           description: Token invalid
   /user:
     get:
       tags:
         - user
-      summary: "Get all user if the user is admin"
+      summary: Get all user if the user is admin
       parameters:
         - name: Authorization
           in: header
@@ -90,7 +118,30 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/apiResponse'
+                allOf:
+                  - $ref: '#/components/schemas/apiResponse'
+                  - properties:
+                      data:
+                        type: object
+                        properties:
+                          users:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                nim:
+                                  type: string
+                                name:
+                                  type: string
+                                email:
+                                  type: string
+                                phone:
+                                  type: string
+                                role:
+                                  type: string
+
         '403':
           description: Forbidden access
   /user/logout:
@@ -115,6 +166,51 @@ paths:
         '401':
           description: Unauthorized
 
+  /service/buy:
+    post:
+      tags:
+        - service
+      summary: Buy a service
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT Bearer Token
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/buyServiceForm'
+      responses:
+        '200':
+          description: Success buy a service
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/apiResponse'
+                  - properties:
+                      data:
+                        type: object
+                        properties:
+                          order_id:
+                            type: string
+                          gross_amount:
+                            type: integer
+                          transaction_status:
+                            type: string
+                          va_number:
+                            type: integer
+                          bank:
+                            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden access
+        '500':
+          description: Server internal error
 components:
   schemas:
     user:
@@ -135,6 +231,12 @@ components:
         email:
           type: string
           example: "ardimas@gmail.com"
+        nim:
+          type: string
+          nullable: true
+          description: For UPNVJ academic
+        phone:
+          type: number
         password:
           type: string
           example: "tester123"
@@ -162,8 +264,15 @@ components:
           properties:
             message:
               type: string
-
-      
+    buyServiceForm:
+      type: object
+      properties:
+        user_id:
+          type: string
+        service_id:
+          type: integer
+        bank:
+          type: string
                 
 
                 
