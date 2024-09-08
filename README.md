@@ -41,11 +41,12 @@ MIDTRANS_IS_SANITIZED=true
   php artisan serve
 ```
 
+- Dokumentasi API, install extension VSCode OpenAPI (Swagger) Editor
 
 ## Referensi
 
  - [Instalasi PostgreSQL](https://www.youtube.com/watch?v=uN0AfifH1TA)
-
+ - [OpenAPI (Swagger) Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi)
 
 
 ## Feedback
