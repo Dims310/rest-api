@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Validator;
 
@@ -69,7 +70,9 @@ class AuthController extends Controller
             ], 422);
         }
 
+        $uuid = Str::uuid();
         $user = User::create([
+            'uuid' => $request->$uuid,
             'name' => $request->name,
             'nim' => $request->nim,
             'email' => $request->email,
