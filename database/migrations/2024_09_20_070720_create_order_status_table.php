@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('service_prices', function (Blueprint $table) {
-            $table->id();
-            $table->integer('price');
+        Schema::create('order_status', function (Blueprint $table) {
+            $table->uuid()->primary();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('service_prices');
+        Schema::dropIfExists('order_status');
     }
 };
