@@ -12,11 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->uuid('uuid')->primary();
+            $table->uuid()->primary();
             $table->integer('total_amount');
-            $table->string('status')->default('pending');
-            $table->foreignUuid('user_id');
-            $table->foreignId('service_id');
             $table->timestamps();
         });
     }
