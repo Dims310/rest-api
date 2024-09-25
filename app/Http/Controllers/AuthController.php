@@ -13,10 +13,8 @@ class AuthController extends Controller
     //
 
     public function login(Request $request) {
-        $credentials = request(['email', 'password']);
-
         $validator = Validator::make($request->all(), [
-            'email'     => 'required',
+            'email'     => 'required|email',
             'password'  => 'required'
         ]);
 
@@ -30,7 +28,7 @@ class AuthController extends Controller
         }
 
         $credentials = $request->only('email', 'password');
-        $token = auth()->guard('api')->attempt($credentials);
+        $token = auth('api')->attempt($credentials);
 
         // authentication failed
         if (!$token) {
@@ -58,7 +56,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed',
             'phone' => 'required|numeric|unique:users',
-            'role_id' => 'required|integer'
+            'role_id' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
@@ -72,9 +70,9 @@ class AuthController extends Controller
 
         $uuid = Str::uuid();
         $user = User::create([
-            'uuid' => $request->$uuid,
-            'name' => $request->name,
+            'uuid' => $uuid,
             'nim' => $request->nim,
+            'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'phone' => $request->phone,
@@ -106,7 +104,7 @@ class AuthController extends Controller
             'error' => false,
             'data' => [
                 'user' => [
-                    'id' => $user->id,
+                    'uuid' => $user->uuid,
                     'nim' => $user->nim,
                     'name' => $user->name,
                     'email' => $user->email,
@@ -118,13 +116,12 @@ class AuthController extends Controller
     }
 
     public function logout() {
-        // auth('api')->invalidate();
         $removeToken = JWTAuth::invalidate(JWTAuth::getToken());
         if ($removeToken) {
             return response()->json([
                 'error' => false,
                 'data' => [
-                    'message' => "Success logout, invalidate the token."
+                    'message' => "Logout success, invalidate the token."
                 ]
             ]);
         }
