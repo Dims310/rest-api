@@ -29,10 +29,7 @@ MIDTRANS_IS_SANITIZED=true
 - Di terminal VSCode, lakukan migrasi seluruh pembuatan tabel dan entitas termasuk mengisi tabel dengan seeder
 
 ```bash
-  php artisan migrate:fresh
-  php artisan db:seed --class=RolesTableSeeder
-  php artisan db:seed --class=ServicesTableSeeder
-  php artisan db:seed --class=ServicePricesTableSeeder
+  php artisan migrate:fresh --seed
 ```
 
 - Jalanin servernya
