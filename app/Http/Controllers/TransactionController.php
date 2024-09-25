@@ -10,7 +10,7 @@ class TransactionController extends Controller
 {
     public function getAllTransactions() {
         $user = auth('api')->user();
-        $transaction = Transaction::where('user_id', $user->id)->get();
+        $transaction = Transaction::where('user_id', $user->uuid)->get();
 
         if ($user->role->name === "admin") {
             $transaction = Transaction::all();
