@@ -211,6 +211,33 @@ paths:
           description: Forbidden access
         '500':
           description: Server internal error
+  /service:
+    get:
+      tags:
+        - service
+      summary: Get all service UPA Bahasa have
+      responses:
+        '200':
+          description: Success get all services
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/apiResponse'
+                  - properties:
+                      data:
+                        properties:
+                          services:
+                            type: array
+                            items:
+                              properties:
+                                name:
+                                  type: string
+        '404':
+          description: Not found
+        '500': 
+          description: Server internal error
+                          
 components:
   schemas:
     user:
