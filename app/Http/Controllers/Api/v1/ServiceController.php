@@ -45,7 +45,7 @@ class ServiceController extends Controller
         // get current user
         $user = auth('api')->user();
 
-        if ($request->user_id != $user->id) {
+        if ($request->user_id != $user->uuid) {
             return response()->json([
                 'error' => true,
                 'data' => [
@@ -119,6 +119,18 @@ class ServiceController extends Controller
                 ]
             ], 500);
         }
+    }
+
+    public function getServices() {
+        $services = Service::all();
+
+        return response()->json([
+            'error' => false,
+            'data' => [
+                'message' => 'Success get all services.',
+                'services' => $services
+            ]
+        ]);
     }
 
 }
